@@ -1,5 +1,5 @@
 # mongodb_logical_expr_parser
-```
+```javascript
 parse("a&&(b||c)")
 =>
 {
