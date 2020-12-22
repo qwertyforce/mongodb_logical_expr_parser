@@ -124,7 +124,7 @@ function parse(query: string) {
               stack.push({ token: str[i] + str[i + 1], idx: i })
           }
       }
-      if (stack[0].idx === 0 && not_operators.includes(stack[0].token)) {
+      if (stack[0] && stack[0].idx === 0 && not_operators.includes(stack[0].token)) {
           str_arr[0] = "#" + stack[0].token
       }
       for (let i = 1; i < stack.length; i++) {
