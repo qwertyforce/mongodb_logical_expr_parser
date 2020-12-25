@@ -120,6 +120,9 @@ function tokenize(query: string) {
       if (stack.length > 0 && str[i] === ")") {
         let x = stack.pop();
         let m = false;
+        if (!x) {
+          return "##errror##"
+        }
         while (x.token !== "(") {
           x = stack.pop();
           if (!x) {
