@@ -1,6 +1,6 @@
 # mongodb_logical_expression_parser
 ```javascript
-parse("a&&(b||c)")
+build_ast("a&&(b||c)")
 =>
 {
     $and: [
