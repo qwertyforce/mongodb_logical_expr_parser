@@ -177,7 +177,7 @@ function tokenize(query: string) {
     return str_arr.join("");
   }
   function split(str: string) {
-    const tokens = ["&&", "||", "#!", "(%", "%)", ",", "#-"];
+    const operators = ["&&", "||", "#!", "(%", "%)", ",", "#-"];
     const temp_char = "#$#";
     str = not_operator_fix(str);
     str = detect_brackets(str);
@@ -185,8 +185,8 @@ function tokenize(query: string) {
       return []
     }
     console.log(str);
-    for (const token of tokens) {
-      str = str.replaceAll(token, temp_char + token + temp_char);
+    for (const operator of operators) {
+      str = str.replaceAll(operator, temp_char + operator + temp_char);
     }
     const arr = str.split(temp_char).map((el) => el.trim()).filter((el) => el !== "");
     for (let i = 0; i < arr.length; i++) {
