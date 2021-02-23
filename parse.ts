@@ -71,7 +71,9 @@ function parse(tokens: string[]) {
       }
     }
   }
-
+  const comparison_operators=["==","<=",">=","<",">"]
+  const comparison_operators_mongodb:{ [key: string]: string; }={"==":"$eq",">":"$gt","<":"$lt","<=":"$lte",">=":"$gte"}
+  const expr_tags=["height","width"]
   for (const token of tokens) {
     switch (token) {
       case "||":
@@ -92,7 +94,25 @@ function parse(tokens: string[]) {
         execute_until_opening_bracket()
         break;
       default:
-        operands.push({ tags: token })
+        if(expr_tags.some(tag => token.indexOf(tag)===0)){
+          let index_of_operator=-1
+          let comp_operator=""
+          for(const operator of comparison_operators){
+            if(token.indexOf(operator)!==-1){
+              index_of_operator=token.indexOf(operator)
+              comp_operator=operator
+              break
+            }
+          }
+          if(index_of_operator!==-1){
+            const arr=[token.slice(0,index_of_operator).trim(),comp_operator,token.slice(comp_operator.length+index_of_operator).trim()]
+            if(!isNaN(Number(arr[2]))){
+              operands.push({ [arr[0]]: {[comparison_operators_mongodb[arr[1]]]: parseInt(arr[2])} })
+            }
+          }
+        }else{
+          operands.push({ tags: token })
+        }
         break;
     }
   }
@@ -217,3 +237,4 @@ function build_ast(str: string) {
   const ast = parse(tokens)
   return ast
 }
+console.log(JSON.stringify(build_ast("forest&&height>=1920&&width>=1080")))
